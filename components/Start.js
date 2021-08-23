@@ -1,13 +1,13 @@
 import React from 'react';
 import { ImageBackground, StyleSheet, View, Text, Button, TextInput, TouchableOpacity } from 'react-native';
 
-import Chat from './Chat';
-
+// Set up the backgroundColours that will be used to create the colour selection buttons
 const backgroundColors = ['#FFFFFF', '#E0FFFF', '#FFF0F5', '#708090']
 
 export default class Start extends React.Component {
     constructor(props) {
         super(props);
+        // Set the initial state to no username and a white background
         this.state = {
             username: '',
             userBackgroundColor: '#FFFFFF'
@@ -17,18 +17,22 @@ export default class Start extends React.Component {
     render() {
         return (
             <View style={styles.container}>
+                {/* Get the ImageBackground from the provided assets */}
                 <ImageBackground source={require("../assets/Background-Image.png")} resizeMode="cover" style={styles.backgroundImage} >
                     <Text style={styles.title}>Chat App</Text>
+                    {/* The inputContainer View will house all the input sections with its own styling */}
                     <View style={styles.inputContainer}>
                         <TextInput style={styles.nameInput} placeholder='Your Name' onChangeText={(username) => this.setState({username})} />
                         <View>
                             <Text style={styles.colorSelectionHeading}>Choose Background Colour:</Text>
                             <View style={styles.colorSelectionItems}>
+                                {/* Loop through the backgroundColors array and create a TouchableOpacity component for each one. TouchableOpacity is a component that makes it easy to respond to user toches (may swap out for Pressable at a later date) */}
                                 {backgroundColors.map(color => (
                                     <TouchableOpacity key={color} style={styles.colorSelection(color)} onPress={() => this.setState({ userBackgroundColor: color })} />
                                 ))}
                             </View>
                         </View>
+                        {/* When the Start Chatting button is pressed, navigate to the Chat screen passing in the username and userBackgroundColor as props */}
                         <Button style={styles.chatButton} title="Start Chatting" onPress={() => this.props.navigation.navigate('Chat', { username: this.state.username, userBackgroundColor: this.state.userBackgroundColor })} />
                     </View>
                 </ImageBackground>
@@ -94,6 +98,7 @@ const styles = StyleSheet.create({
         justifyContent: 'space-between',
         marginBottom: 15
     },
+    // This formatting allows the colorSelection style to be treated like a function. It is passed in the color that is currently being looped over and allows the color to be set dynamically
     colorSelection: (color) => ({
         width: 40,
         height: 40,

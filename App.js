@@ -1,6 +1,5 @@
-import { StatusBar } from 'expo-status-bar';
 import React from 'react';
-import { StyleSheet, Text, View } from 'react-native';
+import { StyleSheet } from 'react-native';
 
 import Start from './components/Start';
 import Chat from './components/Chat';
@@ -14,6 +13,7 @@ const Stack = createStackNavigator();
 
 export default function App() {
   return (
+    // Use the React Navigation library to set up the navigation stack, which will be used to navigate between the different pages on the app
     <NavigationContainer>
       <Stack.Navigator initialRouteName="Start">
         <Stack.Screen name="Start" component={Start} />
