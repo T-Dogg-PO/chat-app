@@ -2,13 +2,17 @@ import React from 'react';
 import { StyleSheet, View, Text, Button, TextInput } from 'react-native';
 
 export default class Chat extends React.Component {
-    render() {
-        // Set up variables for the username and userBackgroundColor (passed in from the Start view)
+    componentDidMount() {
+        // Set up variable for the username (passed in from the Start view)
         let username = this.props.route.params.username;
-        let userBackgroundColor = this.props.route.params.userBackgroundColor;
-
         // Set the title at the top of the App to the passed in username
         this.props.navigation.setOptions({ title: username });
+    }
+
+    render() {
+        // Set up variable for the userBackgroundColor (passed in from the Start view)
+        let userBackgroundColor = this.props.route.params.userBackgroundColor;
+
         return (
             <View style={styles.container(userBackgroundColor)}>
                 <Text style={styles.title}>Placeholder Chat Screen</Text>

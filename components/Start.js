@@ -10,7 +10,7 @@ export default class Start extends React.Component {
         // Set the initial state to no username and a white background
         this.state = {
             username: '',
-            userBackgroundColor: '#FFFFFF'
+            userBackgroundColor: '#FFFFFF',
         }
     }
 
@@ -28,7 +28,7 @@ export default class Start extends React.Component {
                             <View style={styles.colorSelectionItems}>
                                 {/* Loop through the backgroundColors array and create a TouchableOpacity component for each one. TouchableOpacity is a component that makes it easy to respond to user toches (may swap out for Pressable at a later date) */}
                                 {backgroundColors.map(color => (
-                                    <TouchableOpacity key={color} style={styles.colorSelection(color)} onPress={() => this.setState({ userBackgroundColor: color })} />
+                                    <TouchableOpacity key={color} style={[styles.colorSelection(color), color === this.state.userBackgroundColor ? styles.selectedItem : null]} onPress={() => this.setState({ userBackgroundColor: color })} />
                                 ))}
                             </View>
                         </View>
@@ -106,5 +106,8 @@ const styles = StyleSheet.create({
         borderColor: 'black',
         borderWidth: 2,
         backgroundColor: color
-    })
+    }),
+    selectedItem: {
+        borderColor: 'red'
+    }
 });
