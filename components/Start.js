@@ -1,5 +1,5 @@
 import React from 'react';
-import { ImageBackground, StyleSheet, View, Text, Button, TextInput, TouchableOpacity } from 'react-native';
+import { ImageBackground, StyleSheet, View, Text, Button, TextInput, TouchableOpacity, Platform, KeyboardAvoidingView } from 'react-native';
 
 // Set up the backgroundColours that will be used to create the colour selection buttons
 const backgroundColors = ['#FFFFFF', '#E0FFFF', '#FFF0F5', '#708090']
@@ -28,7 +28,15 @@ export default class Start extends React.Component {
                             <View style={styles.colorSelectionItems}>
                                 {/* Loop through the backgroundColors array and create a TouchableOpacity component for each one. TouchableOpacity is a component that makes it easy to respond to user toches (may swap out for Pressable at a later date) */}
                                 {backgroundColors.map(color => (
-                                    <TouchableOpacity key={color} style={[styles.colorSelection(color), color === this.state.userBackgroundColor ? styles.selectedItem : null]} onPress={() => this.setState({ userBackgroundColor: color })} />
+                                    <TouchableOpacity
+                                    key={color}
+                                    style={[styles.colorSelection(color), color === this.state.userBackgroundColor ? styles.selectedItem : null]}
+                                    onPress={() => this.setState({ userBackgroundColor: color })}
+                                    accessible={true}
+                                    accessibilityLabel="Pick a background colour"
+                                    accessibilityHint="Pick from a selection of colours for the background of your chat screen"
+                                    accessibilityRole="button"
+                                    />
                                 ))}
                             </View>
                         </View>
@@ -36,6 +44,7 @@ export default class Start extends React.Component {
                         <Button style={styles.chatButton} title="Start Chatting" onPress={() => this.props.navigation.navigate('Chat', { username: this.state.username, userBackgroundColor: this.state.userBackgroundColor })} />
                     </View>
                 </ImageBackground>
+                { Platform.OS === 'android' ? <KeyboardAvoidingView behavior="height" /> : null }
             </View>
         )
     }
