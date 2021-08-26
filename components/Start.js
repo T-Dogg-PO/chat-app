@@ -30,7 +30,7 @@ export default class Start extends React.Component {
                                 {backgroundColors.map(color => (
                                     <TouchableOpacity
                                     key={color}
-                                    style={[styles.colorSelection(color), color === this.state.userBackgroundColor ? styles.selectedItem : null]}
+                                    style={[styles.colorSelection, { backgroundColor: color }, color === this.state.userBackgroundColor ? styles.selectedItem : null]}
                                     onPress={() => this.setState({ userBackgroundColor: color })}
                                     accessible={true}
                                     accessibilityLabel="Pick a background colour"
@@ -108,13 +108,12 @@ const styles = StyleSheet.create({
         marginBottom: 15
     },
     // This formatting allows the colorSelection style to be treated like a function. It is passed in the color that is currently being looped over and allows the color to be set dynamically
-    colorSelection: (color) => ({
+    colorSelection: ({
         width: 40,
         height: 40,
         borderRadius: 20,
         borderColor: 'black',
         borderWidth: 2,
-        backgroundColor: color
     }),
     selectedItem: {
         borderColor: 'red'
