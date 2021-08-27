@@ -9,7 +9,7 @@ export default class Start extends React.Component {
         super(props);
         // Set the initial state to no username and a white background
         this.state = {
-            username: '',
+            name: '',
             userBackgroundColor: '#FFFFFF',
         }
     }
@@ -22,7 +22,7 @@ export default class Start extends React.Component {
                     <Text style={styles.title}>Chat App</Text>
                     {/* The inputContainer View will house all the input sections with its own styling */}
                     <View style={styles.inputContainer}>
-                        <TextInput style={styles.nameInput} placeholder='Your Name' onChangeText={(username) => this.setState({username})} />
+                        <TextInput style={styles.nameInput} placeholder='Your Name' onChangeText={(name) => this.setState({name})} />
                         <View>
                             <Text style={styles.colorSelectionHeading}>Choose Background Colour:</Text>
                             <View style={styles.colorSelectionItems}>
@@ -41,7 +41,7 @@ export default class Start extends React.Component {
                             </View>
                         </View>
                         {/* When the Start Chatting button is pressed, navigate to the Chat screen passing in the username and userBackgroundColor as props */}
-                        <Button style={styles.chatButton} title="Start Chatting" onPress={() => this.props.navigation.navigate('Chat', { username: this.state.username, userBackgroundColor: this.state.userBackgroundColor })} />
+                        <Button style={styles.chatButton} title="Start Chatting" onPress={() => this.props.navigation.navigate('Chat', { name: this.state.name, userBackgroundColor: this.state.userBackgroundColor })} />
                     </View>
                 </ImageBackground>
                 { Platform.OS === 'android' ? <KeyboardAvoidingView behavior="height" /> : null }
