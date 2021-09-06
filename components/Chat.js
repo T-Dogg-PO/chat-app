@@ -104,16 +104,7 @@ export default class Chat extends React.Component {
         this.setState(previousState => ({
             messages: GiftedChat.append(previousState.messages, messages),
             }),
-            // Then call the function addMessages to add the new message to the database
-            // NOTE FOR TUTOR, I'm not sure why this format was needed. I had previously tried adding the messages within onSend, like so:
-            //     this.referenceChatMessages.add({
-            //     uid: this.state.uid,
-            //     _id: messages._id,
-            //     text: messages.text,
-            //     createdAt: messages.createdAt,
-            //     user: messages.user,
-            //     });
-            // But I couldn't get it work in anything except this format, because it would give me an error message saying that the _id was missing
+            // Callback to tge addNessages function, which will add the new message to the database
             () => { this.addMessages(); }
         );
     }
