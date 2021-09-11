@@ -3,6 +3,9 @@ import { StyleSheet, View, Platform, KeyboardAvoidingView } from 'react-native';
 import { Bubble, GiftedChat, InputToolbar } from 'react-native-gifted-chat';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import NetInfo from '@react-native-community/netinfo';
+import MapView from 'react-native-maps';
+
+import CustomActions from './CustomActions';
 
 
 // Import Firebase, which will be used to store chat data
@@ -120,9 +123,12 @@ export default class Chat extends React.Component {
             var data = doc.data();
             messages.push({
                 _id: data._id,
-                text: data.text,
+                text: data.text || "",
                 createdAt: data.createdAt.toDate(),
                 user: data.user,
+                // Make sure that for optional fields, if data doesn't have that field to set it to null
+                image: data.image || null,
+                location: data.location || null
             });
         });
         this.setState({
@@ -132,7 +138,8 @@ export default class Chat extends React.Component {
 
 
     // Function for 'sending messages'. Adds a submitted message to the messages state by appending it to the previousState (which references a components state at the time the change is applied)
-    onSend(messages = []) {
+    // Successfully saving messages that included an image required that this be an arrow function. I need to clarify exactly WHY this needed to be an arrow function (without the arrow syntax, I got an error "FirebaseError: Function addDoc() called with invalid data.")
+    onSend = (messages = []) => {
         this.setState(previousState => ({
             messages: GiftedChat.append(previousState.messages, messages),
             }),
@@ -146,14 +153,17 @@ export default class Chat extends React.Component {
 
     // Function for saving the message to the database. It takes the first entry in the messages array from the state (which should be the newest message added)
     // Then adds it to the database
-    addMessagesDatabase() {
+    // Importantly here, we define the format of the messages object that's being saved to the database. Custom keys (such as location) also need to be included here
+    async addMessagesDatabase() {
         const message = this.state.messages[0];
         this.referenceChatMessages.add({
             uid: this.state.uid,
             _id: message._id,
-            text: message.text,
+            text: message.text || "",
             createdAt: message.createdAt,
             user: message.user,
+            image: message.image || null,
+            location: message.location || null
         });
     }
 
@@ -205,6 +215,35 @@ export default class Chat extends React.Component {
         }
     }
 
+    // Function to render the Custom Actions circle button, which will display options like location sharing and image handling
+    renderCustomActions = (props) => {
+        return <CustomActions {...props} />;
+    };
+
+    // Function to render the Custom View, which will be used to display the location map
+    renderCustomView = (props) => {
+        const { currentMessage } = props;
+        if (currentMessage.location) {
+            return (
+                <MapView
+                    style={{
+                        width: 150,
+                        height: 100,
+                        borderRadius: 13,
+                        margin: 3
+                    }}
+                    region={{
+                        latitude: currentMessage.location.latitude,
+                        longitude: currentMessage.location.longitude,
+                        latitudeDelta: 0.0922,
+                        longitudeDelta: 0.0421,
+                    }}
+                />
+            );
+        }
+        return null;
+    }
+
     render() {
         // Set up variable for the userBackgroundColor (passed in from the Start view)
         let userBackgroundColor = this.props.route.params.userBackgroundColor;
@@ -214,6 +253,8 @@ export default class Chat extends React.Component {
                 <GiftedChat
                 renderBubble={this.renderBubble.bind(this)}
                 renderInputToolbar={this.renderInputToolbar.bind(this)}
+                renderActions={this.renderCustomActions}
+                renderCustomView={this.renderCustomView}
                 messages={this.state.messages}
                 onSend={messages => this.onSend(messages)}
                 user={this.state.user}
