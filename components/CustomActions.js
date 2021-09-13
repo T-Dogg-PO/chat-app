@@ -37,7 +37,7 @@ export default class CustomActions extends React.Component {
     // Function which will allow the user to pick an image from their gallery. First ask for permission, then use the launchImageLibraryAsync function to pick an image.
     //  If it's not cancelled, then use the uploadImageFetch function to upload the image to Firestore, and use the onSend function from Chat.js to send it as a message through GiftedChat
     pickImage = async () => {
-        const { status } = await Permissions.askAsync(Permissions.CAMERA_ROLL);
+        const { status } = await ImagePicker.requestMediaLibraryPermissionsAsync();
 
         if (status === 'granted') {
             let result = await ImagePicker.launchImageLibraryAsync({
@@ -54,7 +54,7 @@ export default class CustomActions extends React.Component {
     // Function to take a photo with the devices camera. Ask for permissions to image storage and the device camera. If granted, then use the launchCameraAsync function to take the picture.
     //  If it's not cancelled, then use the uploadImageFetch function to upload the image to Firestore, and use the onSend function from Chat.js to send it as a message through GiftedChat
     takePhoto = async () => {
-        const { status } = await Permissions.askAsync(Permissions.CAMERA_ROLL, Permissions.CAMERA);
+        const { status } = await ImagePicker.requestCameraPermissionsAsync();
 
         if (status === 'granted') {
             let result = await ImagePicker.launchCameraAsync({
@@ -71,10 +71,10 @@ export default class CustomActions extends React.Component {
     // Function to share a users location. Ask for permissions to the devices location. If granted, then use the getCurrentPositionAsync function to get the users location from their device
     // Then use the onSend function from Chat.js to send the message through GiftedChat (using renderCustomView to render a custom map component)
     getLocation = async () => {
-        const { status } = await Permissions.askAsync(Permissions.LOCATION);
+        const { status } = await Location.requestForegroundPermissionsAsync();
 
         if (status === 'granted') {
-            let result = await Location.getCurrentPositionAsync({}).catch((error) => console.log(error));
+            let result = await Location.getCurrentPositionAsync({ enableHighAccuracy: true }).catch((error) => console.log(error));
 
             if (result) {
                 this.props.onSend({
