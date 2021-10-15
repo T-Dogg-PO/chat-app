@@ -2,14 +2,16 @@
 ## A React Native app for chatting with other people
 
 ## Purpose
-The purpose of this Chat-App is to experiment with using React Native to build a mobile app
+The purpose of this Chat-App is to experiment with using React Native to build a mobile app. Through this app users will be able to send text messages, images from their device storage and take + send new pictures using their device camera.
 
 ## Technologies Used
 * React-Native
+* Gifted Chat
 * Expo
 * Firebase/Firestore
 
 ## Usage
+No live demo of this app exists at this time, so please follow the steps below if you would like to use it yourself!
 * Clone the project
 ```
 git clone https://github.com/T-Dogg-PO/chat-app.git
