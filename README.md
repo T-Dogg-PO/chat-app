@@ -1,5 +1,6 @@
 # Chat-App
 ## A React Native app for chatting with other people
+<img src="assets/chat.PNG" style="max-width: 100%;">
 
 ## Purpose
 The purpose of this Chat-App is to experiment with using React Native to build a mobile app. Through this app users will be able to send text messages, images from their device storage and take + send new pictures using their device camera.
